@@ -5,6 +5,7 @@ import * as ProgressPrimitive from '@radix-ui/react-progress'
 
 import { cn } from '@/lib/utils'
 
+//extends typeof with indicatorcolor.
 type ProgressProps = React.ComponentPropsWithoutRef<
   typeof ProgressPrimitive.Root
 > & {

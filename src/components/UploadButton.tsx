@@ -12,7 +12,7 @@ import {
 import { Button } from './ui/button'
 
 //dropzone is imported as a default, not as a type. in object syntax so not destructuring
-import Dropzone from 'react-dropzone'
+import Dropzone from "react-dropzone"
 import { Cloud, File, Loader2 } from 'lucide-react'
 import { Progress } from './ui/progress'
 import { useUploadThing } from '@/lib/uploadthing'
@@ -27,8 +27,12 @@ const UploadDropzone = ({
 }) => {
   const router = useRouter()
 
+  //show loading progress of pdf uploading. 
+  //useState<boolean> can also be <boolean | null> if there are multiple allowed states. 
   const [isUploading, setIsUploading] =
     useState<boolean>(false)
+
+  //state for upload progress, and tells ts that its only ever a number type. 
   const [uploadProgress, setUploadProgress] =
     useState<number>(0)
   const { toast } = useToast()
@@ -37,6 +41,9 @@ const UploadDropzone = ({
     isSubscribed ? 'proPlanUploader' : 'freePlanUploader'
   )
 
+  //with trpc polling, retry and continuously poll after every time interval. 
+  //without {mutate:StartPolling}, nothign will trigger this action so need to include. 
+  //startPolling begins at the very end of the onDrop function/event. 
   const { mutate: startPolling } = trpc.getFile.useMutation(
     {
       onSuccess: (file) => {
@@ -63,6 +70,7 @@ const UploadDropzone = ({
     return interval
   }
 
+  //have multiple = false because you only want to upload a single pdf at a time.
   return (
     <Dropzone
       multiple={false}
@@ -71,6 +79,8 @@ const UploadDropzone = ({
 
         const progressInterval = startSimulatedProgress()
 
+        //to test file upload progress speed: await new Promise((resolve)=>setTimeout(resolve,3000));
+        
         // handle file uploading
         const res = await startUpload(acceptedFile)
 
@@ -86,6 +96,7 @@ const UploadDropzone = ({
 
         const key = fileResponse?.key
 
+          //key is essential to see if image is uploaded successfully.
         if (!key) {
           return toast({
             title: 'Something went wrong',
@@ -97,6 +108,8 @@ const UploadDropzone = ({
         clearInterval(progressInterval)
         setUploadProgress(100)
 
+        //need to to polling to make sure that after we "uploaded", that it is actually inside the database. 
+        //polling is where our app (yb) sends request to api every (*) seconds, and our api gives a response back after check db
         startPolling({ key })
       }}>
       {({ getRootProps, getInputProps, acceptedFiles }) => (

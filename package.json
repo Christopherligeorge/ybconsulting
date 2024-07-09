@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.9.0",
     "@kinde-oss/kinde-auth-nextjs": "^2.3.4",
     "@prisma/client": "^5.16.1",
     "@radix-ui/react-avatar": "^1.1.0",
@@ -25,6 +26,7 @@
     "@trpc/react-query": "^11.0.0-rc.449",
     "@trpc/server": "^11.0.0-rc.449",
     "@types/react-dropzone": "^5.1.0",
+    "@uploadthing/react": "^6.7.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
@@ -37,8 +39,11 @@
     "react-hook-form": "^7.52.1",
     "react-loading-skeleton": "^3.4.0",
     "react-pdf": "^9.1.0",
+    "react-resize-detector": "^11.0.1",
+    "simplebar-react": "^3.2.6",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
+    "uploadthing": "^6.13.2",
     "zod": "^3.23.8"
   },
   "devDependencies": {

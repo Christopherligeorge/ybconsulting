@@ -7,7 +7,9 @@ import { redirect } from 'next/navigation'
 const Page = async () => {
     //get the current login status/session of the user 
   const { getUser } = getKindeServerSession()
-  const user = getUser()
+
+  //needs to be await, because variable 'user' is a promise that resolves to a kindeuser object or null, but not the object itself. 
+  const user = await getUser()
 
   //have to sync user to the db, make sure that it is a user in the DB
  
@@ -27,9 +29,9 @@ const Page = async () => {
 
   if(!dbUser) redirect('/auth-callback?origin=dashboard')
 
-  //const subscriptionPlan = await getUserSubscriptionPlan()
+  const subscriptionPlan = await getUserSubscriptionPlan()
 
-  //return <Dashboard subscriptionPlan={subscriptionPlan} />
+  return <Dashboard subscriptionPlan={subscriptionPlan} />
 }
 
 export default Page

@@ -36,6 +36,10 @@ import {
 import SimpleBar from 'simplebar-react'
 import PdfFullscreen from './PdfFullscreen'
 
+//very necessary, the worker that expects pdfjs, and pdfjs is also from react-pdf.
+//pdfrenderer has to be a client component or else the pdf will fail to upload. 
+//has to be client side for the worker to work. 
+
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`
 
 interface PdfRendererProps {
@@ -45,7 +49,10 @@ interface PdfRendererProps {
 const PdfRenderer = ({ url }: PdfRendererProps) => {
   const { toast } = useToast()
 
+  //state that stores the total number of pages. by default numPages is undefined but after rendering react tells us
   const [numPages, setNumPages] = useState<number>()
+
+  //stores current page of the pdf.
   const [currPage, setCurrPage] = useState<number>(1)
   const [scale, setScale] = useState<number>(1)
   const [rotation, setRotation] = useState<number>(0)
@@ -55,6 +62,10 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
 
   const isLoading = renderedScale !== scale
 
+
+
+  //the useform function accepts the custom typed page value the user wants to go to. 
+  //this validates that # of pages is acceptable.
   const CustomPageValidator = z.object({
     page: z
       .string()
@@ -63,10 +74,15 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
       ),
   })
 
+  //makes sure we can get the type for custompagevalidator, and then use it in the useForm function after.
   type TCustomPageValidator = z.infer<
     typeof CustomPageValidator
   >
 
+
+
+  //hookform resolvers (zod here) connects the page validator with the type to allow the logic to be used. 
+  //if custompagevalidator has error, install zod@3.21.4
   const {
     register,
     handleSubmit,
@@ -81,8 +97,12 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
 
   console.log(errors)
 
+  //hook states used to resize the pdf
+  //can use these properties with Page. 
   const { width, ref } = useResizeDetector()
 
+
+  //input in setValueis a string because inputs are always strings here. 
   const handlePageSubmit = ({
     page,
   }: TCustomPageValidator) => {
@@ -90,6 +110,11 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
     setValue('page', String(page))
   }
 
+  //the first button has an onclick listener
+  //recieves prev pag as a callback, does a conditional check to make sure if page is 1 it doesnt go lower. 
+  //if valid, goes 1 page lower.
+
+  //onkeydown function processes the information if you hit enter.
   return (
     <div className='w-full bg-white rounded-md shadow flex flex-col items-center'>
       <div className='h-14 w-full border-b border-zinc-200 flex items-center justify-between px-2'>

@@ -52,6 +52,7 @@ export const appRouter = router({
 
     return { success: true }
   }),
+  //private procedure to make sure only logged in, can access files. 
   getUserFiles: privateProcedure.query(async ({ ctx }) => {
     const { userId } = ctx
 
@@ -120,6 +121,8 @@ export const appRouter = router({
     }
   ),
 
+  //z.object makes sure input we get is a certain schema, and need a key property which is z.string()
+  //key here is important for checking with our database. 
   getFileMessages: privateProcedure
     .input(
       z.object({
@@ -133,6 +136,7 @@ export const appRouter = router({
       const { fileId, cursor } = input
       const limit = input.limit ?? INFINITE_QUERY_LIMIT
 
+      //finds file where file is fileID, and only if userid is logged in in this privateprocedure. 
       const file = await db.file.findFirst({
         where: {
           id: fileId,
@@ -200,6 +204,7 @@ export const appRouter = router({
 
       if (!file) throw new TRPCError({ code: 'NOT_FOUND' })
 
+      //if the file is found, we return it after the getfile endpoint is called. 
       return file
     }),
 
