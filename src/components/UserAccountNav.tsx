@@ -1,4 +1,4 @@
-/*import { getUserSubscriptionPlan } from '@/lib/stripe'
+import { getUserSubscriptionPlan } from '@/lib/stripe'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -100,4 +100,3 @@ const UserAccountNav = async ({
 
 export default UserAccountNav
 
-*/

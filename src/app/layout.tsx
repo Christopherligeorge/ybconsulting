@@ -1,6 +1,5 @@
 
 
-/*
 import Navbar from '@/components/Navbar'
 import Providers from '@/components/Providers'
 import { cn, constructMetadata } from '@/lib/utils'
@@ -11,6 +10,11 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import 'simplebar-react/dist/simplebar.min.css'
 
 import { Toaster } from '@/components/ui/toaster'
+
+
+// This component wraps the entire application
+//{children} in layout.tsx are all the pages in our app
+//the <body> tags wrap the app
 
 const inter = Inter({ subsets: ['latin'] })
 
