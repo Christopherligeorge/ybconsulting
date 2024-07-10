@@ -7,13 +7,15 @@ import {
 import { TRPCError } from '@trpc/server'
 import { db } from '@/db'
 import { z } from 'zod'
-//import { INFINITE_QUERY_LIMIT } from '@/config/infinite-query'
+
+//infinite query makes sure that in the chatbox, doesnt load up all 10000 or so preivous messages, only a small amount are loaded in mem.
+import { INFINITE_QUERY_LIMIT } from '@/config/infinite-query'
 import { absoluteUrl } from '@/lib/utils'
-/*import {
+import {
   getUserSubscriptionPlan,
   stripe,
 } from '@/lib/stripe'*/
-//import { PLANS } from '@/config/stripe'
+import { PLANS } from '@/config/stripe'
 
 export const appRouter = router({
   authCallback: publicProcedure.query(async () => {
@@ -175,6 +177,7 @@ export const appRouter = router({
       }
     }),
 
+  //
   getFileUploadStatus: privateProcedure
     .input(z.object({ fileId: z.string() }))
     .query(async ({ input, ctx }) => {

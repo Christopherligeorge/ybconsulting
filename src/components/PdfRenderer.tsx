@@ -54,12 +54,21 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
 
   //stores current page of the pdf.
   const [currPage, setCurrPage] = useState<number>(1)
+
+  //saved state that changes the zoom percentage. code displays current scale to the user(100%)
+  //onSelect, we define the different number of zoom percentage options.  
+  //ALSO, pass this scale property to the <page> component to not just change the dropdown value but also the pdf size itself. 
+  //pass rotate = {rotation} as well as scale = {scale} to pages to apply changes. 
   const [scale, setScale] = useState<number>(1)
+
   const [rotation, setRotation] = useState<number>(0)
+  
+  //keeps the scale of the pdf size that is already rendering before resizing. 
   const [renderedScale, setRenderedScale] = useState<
     number | null
   >(null)
 
+  //boolean that is true if rendered isnt the same as current set scale
   const isLoading = renderedScale !== scale
 
 

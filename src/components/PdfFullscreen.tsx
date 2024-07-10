@@ -11,6 +11,7 @@ import { Document, Page } from 'react-pdf'
 import { useToast } from './ui/use-toast'
 import { useResizeDetector } from 'react-resize-detector'
 
+//this option does not display one page at a time like pdfrenderer, but instead displays all pages at once.
 interface PdfFullscreenProps {
   fileUrl: string
 }
@@ -19,10 +20,12 @@ const PdfFullscreen = ({ fileUrl }: PdfFullscreenProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [numPages, setNumPages] = useState<number>()
 
+  //destructured version of the useToast hook, not a direct import. 
   const { toast } = useToast()
 
   const { width, ref } = useResizeDetector()
 
+  //add eventlistener and event to the dialog trigger, not the button, to make sure fullscreen activates when clicked.
   return (
     <Dialog
       open={isOpen}

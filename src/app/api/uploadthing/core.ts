@@ -59,13 +59,16 @@ const onUploadComplete = async ({
     },
   })
 
+//need try catch block for pinecone pdf handling. fetch from the createdfile function that creates the file in the db.
   try {
+    //keeps url in memory
     const response = await fetch(
       `https://uploadthing-prod.s3.us-west-2.amazonaws.com/${file.key}`
     )
 
     const blob = await response.blob()
 
+    //loads pdf into memory
     const loader = new PDFLoader(blob)
 
     const pageLevelDocs = await loader.load()
@@ -98,9 +101,11 @@ const onUploadComplete = async ({
     }
 
     // vectorize and index entire document
+    //vectorize to allow for analysis by llm
     const pinecone = await getPineconeClient()
-    const pineconeIndex = pinecone.Index('quill')
+    const pineconeIndex = pinecone.Index('ybconsult')
 
+    //generats vector from the texts.
     const embeddings = new OpenAIEmbeddings({
       openAIApiKey: process.env.OPENAI_API_KEY,
     })
