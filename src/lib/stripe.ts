@@ -1,18 +1,25 @@
 
-/*
 import { PLANS } from '@/config/stripe'
 import { db } from '@/db'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 import Stripe from 'stripe'
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
-  apiVersion: '2023-08-16',
+  apiVersion: '2024-06-20',
   typescript: true,
 })
 
 export async function getUserSubscriptionPlan() {
   const { getUser } = getKindeServerSession()
-  const user = getUser()
+  const user = await getUser()
+
+  /*
+  To error handle if user possible null
+  if (!user) {
+    // if user is null or undefined, throw an error
+    throw new TRPCError({ code: 'UNAUTHORIZED' })
+  }*/ 
+
 
   if (!user.id) {
     return {

@@ -75,6 +75,8 @@ export const POST = async (req: NextRequest) => {
     4
   )
 
+
+  //find previous messages, here is the last 6 that are loaded.
   const prevMessages = await db.message.findMany({
     where: {
       fileId,
@@ -92,6 +94,8 @@ export const POST = async (req: NextRequest) => {
     content: msg.text,
   }))
 
+  //stores messages in a vector in a specific format, so u can access them easily again
+  //previous context  was ${results.map((r) => r.pageContent).join('\n\n')}, but had an implicity type any error.
   const response = await openai.chat.completions.create({
     model: 'gpt-3.5-turbo',
     temperature: 0,
@@ -118,7 +122,8 @@ export const POST = async (req: NextRequest) => {
   \n----------------\n
   
   CONTEXT:
-  ${results.map((r) => r.pageContent).join('\n\n')}
+${results.map((r: { pageContent: string }) => r.pageContent).join('\n\n')}
+  
   
   USER INPUT: ${message}`,
       },
@@ -126,7 +131,8 @@ export const POST = async (req: NextRequest) => {
   })
 
   const stream = OpenAIStream(response, {
-    async onCompletion(completion) {
+    //originally oncompletion was just completion, but we set it to completion:string to remove implicity any error
+    async onCompletion(completion:string) {
       await db.message.create({
         data: {
           text: completion,
@@ -138,5 +144,6 @@ export const POST = async (req: NextRequest) => {
     },
   })
 
+  //process the stream data as it is jsut generated 
   return new StreamingTextResponse(stream)
 }

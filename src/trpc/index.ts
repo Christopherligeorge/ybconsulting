@@ -14,7 +14,7 @@ import { absoluteUrl } from '@/lib/utils'
 import {
   getUserSubscriptionPlan,
   stripe,
-} from '@/lib/stripe'*/
+} from '@/lib/stripe'
 import { PLANS } from '@/config/stripe'
 
 export const appRouter = router({
@@ -148,6 +148,7 @@ export const appRouter = router({
 
       if (!file) throw new TRPCError({ code: 'NOT_FOUND' })
 
+        //take: limit+1 tells us the extra element that is not the currently loaded/displayed messages, the cursor should be loaded.
       const messages = await db.message.findMany({
         take: limit + 1,
         where: {
@@ -165,6 +166,8 @@ export const appRouter = router({
         },
       })
 
+      //messages.length>limit means if we have more messages in the db than the current limit, we pop out the most recent msg.
+      //consNextItem is the item we last fetch and nextcursor finds that item's id
       let nextCursor: typeof cursor | undefined = undefined
       if (messages.length > limit) {
         const nextItem = messages.pop()

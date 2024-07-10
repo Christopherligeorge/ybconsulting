@@ -8,6 +8,7 @@ import {
   type FileRouter,
 } from 'uploadthing/next'
 
+//pdf parse necessary for langchain
 import { PDFLoader } from 'langchain/document_loaders/fs/pdf'
 import { OpenAIEmbeddings } from 'langchain/embeddings/openai'
 import { PineconeStore } from 'langchain/vectorstores/pinecone'
@@ -101,7 +102,7 @@ const onUploadComplete = async ({
     }
 
     // vectorize and index entire document
-    //vectorize to allow for analysis by llm
+    //vectorize to allow for analysis by llm, and necessary to acess the pinecone.ts file export
     const pinecone = await getPineconeClient()
     const pineconeIndex = pinecone.Index('ybconsult')
 
@@ -110,10 +111,12 @@ const onUploadComplete = async ({
       openAIApiKey: process.env.OPENAI_API_KEY,
     })
 
+    //pass pineconestore pageleveldocs which loaded the pdf.
     await PineconeStore.fromDocuments(
       pageLevelDocs,
       embeddings,
       {
+        //@ts-ignore
         pineconeIndex,
         namespace: createdFile.id,
       }
