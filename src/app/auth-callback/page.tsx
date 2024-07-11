@@ -16,6 +16,26 @@ const Page = () => {
   const searchParams = useSearchParams()
   const origin = searchParams.get('origin')
 
+
+  //onsettled vs onsuccess property sometimes
+
+  trpc.authCallback.useQuery(undefined, {
+    onSuccess: ({ data,error}) => {
+      if (data?.success) {
+        // user is synced to db
+        router.push(origin ? `/${origin}` : '/dashboard')
+      }
+      else if (error?.data?.code === 'UNAUTHORIZED') {
+        router.push('/sign-in')
+      }
+    },
+    retry: true,
+    retryDelay: 500,
+  })
+  
+  /*
+  1. onsuccess has no overload that matches 
+  2.binding element success implicity has any type, as well as err
   trpc.authCallback.useQuery(undefined, {
     onSuccess: ({ success }) => {
       if (success) {
@@ -30,7 +50,7 @@ const Page = () => {
     },
     retry: true,
     retryDelay: 500,
-  })
+  })*/
 
   return (
     <div className='w-full mt-24 flex justify-center'>

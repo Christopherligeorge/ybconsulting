@@ -143,6 +143,7 @@ import {
         // accumulated response
         let accResponse = ''
   
+        //read the stream
         while (!done) {
           const { value, done: doneReading } =
             await reader.read()

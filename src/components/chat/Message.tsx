@@ -10,6 +10,8 @@ interface MessageProps {
   isNextMessageSamePerson: boolean
 }
 
+//normally in react, cannot pass ref as a prop, but find a way here
+//
 const Message = forwardRef<HTMLDivElement, MessageProps>(
   ({ message, isNextMessageSamePerson }, ref) => {
     return (

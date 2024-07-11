@@ -6,6 +6,8 @@ import {
 } from './ui/dialog'
 import { Button } from './ui/button'
 import { Expand, Loader2 } from 'lucide-react'
+
+//install simplebar differently, using pnpm so there are no errors
 import SimpleBar from 'simplebar-react'
 import { Document, Page } from 'react-pdf'
 import { useToast } from './ui/use-toast'
