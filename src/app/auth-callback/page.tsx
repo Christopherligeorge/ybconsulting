@@ -5,6 +5,10 @@
 import { useRouter, useSearchParams } from 'next/navigation'
 import { trpc } from '../_trpc/client'
 import { Loader2 } from 'lucide-react'
+import { error } from 'console'
+import router from 'next/router'
+import { useEffect } from 'react'
+
 
 //only purpose of the page is to make sure user is synced to the database! 
 
@@ -18,9 +22,22 @@ const Page = () => {
 
 
   //onsettled vs onsuccess property sometimes
+/*
+  trpc.authCallback.useQuery(undefined);
+  
+    useEffect(()=>{ 
+      //error code unauthorized
+      if (error.data?.code === 'UNAUTHORIZED') {
+        router.push('/sign-in')}
+      else if(!isLoading){
+        router.push(origin ? `/${origin}` : '/dashboard')
+      }
 
-  trpc.authCallback.useQuery(undefined, {
-    onSuccess: ({ data,error}) => {
+
+    })
+    
+    
+    ({ data,error}) => {
       if (data?.success) {
         // user is synced to db
         router.push(origin ? `/${origin}` : '/dashboard')
@@ -33,24 +50,26 @@ const Page = () => {
     retryDelay: 500,
   })
   
-  /*
+  
   1. onsuccess has no overload that matches 
-  2.binding element success implicity has any type, as well as err
+  2.binding element success implicity has any type, as well as err*/
+
+
   trpc.authCallback.useQuery(undefined, {
-    onSuccess: ({ success }) => {
+    onSuccess: ({ success }:{success:boolean}) => {
       if (success) {
         // user is synced to db
         router.push(origin ? `/${origin}` : '/dashboard')
       }
     },
-    onError: (err) => {
+    onError: (err:any) => {
       if (err.data?.code === 'UNAUTHORIZED') {
         router.push('/sign-in')
       }
     },
     retry: true,
     retryDelay: 500,
-  })*/
+  })
 
   return (
     <div className='w-full mt-24 flex justify-center'>

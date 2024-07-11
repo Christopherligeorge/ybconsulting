@@ -10,8 +10,10 @@ import {
 
 //pdf parse necessary for langchain
 import { PDFLoader } from 'langchain/document_loaders/fs/pdf'
-import { OpenAIEmbeddings } from 'langchain/embeddings/openai'
-import { PineconeStore } from 'langchain/vectorstores/pinecone'
+import {OpenAIEmbeddings} from '@langchain/openai'
+import { PineconeStore } from '@langchain/pinecone'
+//import { OpenAIEmbeddings } from 'langchain/embeddings/openai'
+//import { PineconeStore } from 'langchain/vectorstores/pinecone'
 import { getPineconeClient } from '@/lib/pinecone'
 import { getUserSubscriptionPlan } from '@/lib/stripe'
 import { PLANS } from '@/config/stripe'

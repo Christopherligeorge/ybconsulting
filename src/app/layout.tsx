@@ -10,6 +10,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import 'simplebar-react/dist/simplebar.min.css'
 
 import { Toaster } from '@/components/ui/toaster'
+import type { Viewport } from 'next'
 
 
 // This component wraps the entire application
@@ -19,6 +20,10 @@ import { Toaster } from '@/components/ui/toaster'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = constructMetadata()
+
+export const viewport: Viewport = {
+  themeColor: '#13131374',
+}
 
 export default function RootLayout({
   children,

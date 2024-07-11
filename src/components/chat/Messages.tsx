@@ -12,6 +12,7 @@ interface MessagesProps {
   fileId: string
 }
 
+
 const Messages = ({ fileId }: MessagesProps) => {
   //handle the loading state
   const { isLoading: isAiThinking } = useContext(ChatContext)
@@ -28,7 +29,7 @@ const Messages = ({ fileId }: MessagesProps) => {
       {
         getNextPageParam: (lastPage) =>
           lastPage?.nextCursor,
-        keepPreviousData: true,
+        //keepPreviousData: true,
       }
     )
 
