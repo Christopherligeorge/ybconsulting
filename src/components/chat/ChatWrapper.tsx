@@ -37,7 +37,9 @@ const ChatWrapper = ({
         fileId,
       },
       {
-        refetchInterval: (data) =>
+        //stated data:any so it doesnt throw ts2339 error,
+        //return (oldObj as any).someProperty;
+        refetchInterval: (data:any) =>
           data?.status === 'SUCCESS' ||
           data?.status /*as UploadStatus*/ === 'FAILED'
             ? false

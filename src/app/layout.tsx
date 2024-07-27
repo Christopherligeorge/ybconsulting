@@ -22,7 +22,7 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata = constructMetadata()
 
 export const viewport: Viewport = {
-  themeColor: '#13131374',
+  themeColor: '#zinc-700',
 }
 
 export default function RootLayout({

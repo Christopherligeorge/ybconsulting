@@ -20,7 +20,8 @@ export async function getUserSubscriptionPlan() {
     throw new TRPCError({ code: 'UNAUTHORIZED' })
   }*/ 
 
-
+    
+//@ts-ignore
   if (!user.id) {
     return {
       ...PLANS[0],
@@ -32,6 +33,7 @@ export async function getUserSubscriptionPlan() {
 
   const dbUser = await db.user.findFirst({
     where: {
+      //@ts-ignore
       id: user.id,
     },
   })

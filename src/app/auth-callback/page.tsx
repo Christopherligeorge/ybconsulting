@@ -8,7 +8,7 @@ import { Loader2 } from 'lucide-react'
 import { error } from 'console'
 import router from 'next/router'
 import { useEffect } from 'react'
-
+import {useQuery} from 'react-query'
 
 //only purpose of the page is to make sure user is synced to the database! 
 
@@ -55,9 +55,52 @@ const Page = () => {
   2.binding element success implicity has any type, as well as err*/
 
 
-  trpc.authCallback.useQuery(undefined, {
-    onSuccess: ({ success }:{success:boolean}) => {
-      if (success) {
+//can trigger the onSuccess side-effects from inside the query function as well, like this:
+/*
+async function fetchPosts() {
+    const resp = await axios.get<TPost[]>("/postss");
+    yourSideEffect();
+    return resp.data;
+  }
+  const query = useQuery(["posts"], fetchPosts); */
+  
+
+  async function authCallback() {
+
+    try{
+    // Simulate an API call
+    const response = await { data: { success: true } }; // Simulated response without using axios.get
+  
+    if (response.data.success) {
+      // Trigger onSuccess side-effect
+      router.push(origin ? `/${origin}` : '/dashboard');
+    } else {
+      throw new Error('UNAUTHORIZED'); // This will be caught by onError
+    }
+    return response.data;
+  }
+
+    catch (err:any) {
+      if (err.message === 'UNAUTHORIZED') {
+        // Trigger onError side-effect
+        router.push('/sign-in');
+      }
+      throw err; // Re-throw the error for the query to handle it if needed
+    }
+  }
+
+  const { isError, error, data, refetch, isFetching } = trpc.authCallback.useQuery(undefined, {
+    queryFn: authCallback,
+    retry: true,
+    retryDelay: 500,
+  });
+  
+
+
+/*
+ trpc.authCallback.useQuery(undefined, {
+    onSuccess: (data:{success:boolean}) => {
+      if (data.success) {
         // user is synced to db
         router.push(origin ? `/${origin}` : '/dashboard')
       }
@@ -69,7 +112,7 @@ const Page = () => {
     },
     retry: true,
     retryDelay: 500,
-  })
+  }) */
 
   return (
     <div className='w-full mt-24 flex justify-center'>

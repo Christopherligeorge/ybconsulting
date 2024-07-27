@@ -24,11 +24,11 @@ export const appRouter = router({
     const user = await getUser()
 
     //add this, ensure user is NOT NULL before checking if userid and email are not the same. 
+   
     if (!user) {
-        // if user is null or undefined, throw an error
-        throw new TRPCError({ code: 'UNAUTHORIZED' })
-      }
-
+      // if user is null or undefined, throw an error
+      throw new TRPCError({ code: 'UNAUTHORIZED' })
+    }
    
     if (!user.id || !user.email)
       throw new TRPCError({ code: 'UNAUTHORIZED' })
@@ -54,6 +54,7 @@ export const appRouter = router({
 
     return { success: true }
   }),
+  
   //private procedure to make sure only logged in, can access files. 
   getUserFiles: privateProcedure.query(async ({ ctx }) => {
     const { userId } = ctx

@@ -23,13 +23,29 @@ interface BillingFormProps {
   >
 }
 
+/*
+The issue "Property 'isLoading' does not exist on type 'UseTRPCMutationResult<{ url: string | null; },
+ TRPCClientErrorLike<{ input: void; output: { url: string | null; };
+ transformer: false; errorShape: DefaultErrorShape; }>, void, unknown>'." 
+ is occurring because the isLoading property is not defined in the type UseTRPCMutationResult<{ url: string | null; }, 
+ TRPCClientErrorLike<{ input: void; output: { url: string | null; }; transformer: false; errorShape: DefaultErrorShape; }>,
+  void, unknown>.
+*/
 
 const BillingForm = ({
   subscriptionPlan,
 }: BillingFormProps) => {
   const { toast } = useToast()
 
-  const { mutate: createStripeSession, isLoading } =
+
+  //ERROR: ORIginally, it was isLoading to specify the state.we changed isloading -> status.
+
+  //This line uses destructuring assignment to extract mutate (renamed to createStripeSession)
+  // and isLoading from the result of the useMutation hook provided by trpc for the 
+  //createStripeSession mutation. mutate is a function to trigger the mutation, and isLoading 
+  //indicates the loading state of the mutation.
+
+  const { mutate: createStripeSession, status} =
     trpc.createStripeSession.useMutation({
       onSuccess: ({ url }) => {
         if (url) window.location.href = url
@@ -62,7 +78,7 @@ const BillingForm = ({
 
           <CardFooter className='flex flex-col items-start space-y-2 md:flex-row md:justify-between md:space-x-0'>
             <Button type='submit'>
-              {isLoading ? (
+              {status ? (
                 <Loader2 className='mr-4 h-4 w-4 animate-spin' />
               ) : null}
               {subscriptionPlan.isSubscribed
