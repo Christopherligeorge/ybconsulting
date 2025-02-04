@@ -27,16 +27,18 @@ const Dashboard = ({subscriptionPlan}: PageProps) => {
     useState<string | null>(null)
 
     //async functions only allowed at top level of modules
-  const utils = trpc.useContext()
+  const utils = trpc.useContext();
 
   const { data: files, isLoading } =
-    trpc.getUserFiles.useQuery()
+    trpc.getUserFiles.useQuery();
 
     //when we destructure mutate in trpc deletefile. when we invoke mutation,then the deletefile code in ,/trpc/index.ts is run
   const { mutate: deleteFile } =
     trpc.deleteFile.useMutation({
       onSuccess: () => {
-        utils.getUserFiles.invalidate()
+        //utils.invalidateQueries(['getUserFiles']);
+        // original, but changed?? because of trpc.useContext() deprecated
+         utils.getUserFiles.invalidate()
       },
       onMutate({ id }) {
         setCurrentlyDeletingFile(id)

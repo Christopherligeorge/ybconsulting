@@ -2,6 +2,10 @@
 
 //need custom webpack in nextConfig to render pdfs(b/c cant render like images.)
 const nextConfig = {
+  
+  images: {
+    domains: ['gravatar.com'],
+  },
     async redirects() {
       return [
         {

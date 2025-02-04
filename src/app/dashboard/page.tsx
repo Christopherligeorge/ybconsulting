@@ -19,22 +19,28 @@ const Page = async () => {
   // if logged in then can use services, if not, syncs user to the database. 
   //if not, that means its new user and user synced to db in auth-callback
 
-  if (!user || !user.id) redirect('/auth-callback?origin=dashboard')
+  if (!user || !user.id){
+    redirect('/auth-callback?origin=dashboard')
+     return null; // Ensure function does not continue after redirect
+    } 
 
   const dbUser = await db.user.findFirst({
     where: {
-      id: user.id
+      id: user.id,
     }
   })
 
-  if(!dbUser) redirect('/auth-callback?origin=dashboard')
+  if(!dbUser) {
+    redirect('/auth-callback?origin=dashboard');
+    return null; // Ensure function does not continue after redirect
+  }
 
-  const subscriptionPlan = await getUserSubscriptionPlan()
+  const subscriptionPlan = await getUserSubscriptionPlan();
 
-  return <Dashboard subscriptionPlan={subscriptionPlan} />
+  return <Dashboard subscriptionPlan={subscriptionPlan} />;
 }
 
-export default Page
+export default Page;
 
 
  // Usually, webhooks are used to sync users to a database. 
