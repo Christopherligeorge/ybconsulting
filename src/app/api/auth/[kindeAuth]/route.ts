@@ -10,19 +10,18 @@
 import { handleAuth } from '@kinde-oss/kinde-auth-nextjs/server'
 import { NextRequest } from 'next/server'
 
-type Props = {
-  params: {
-    kindeAuth: string
-  }
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { kindeAuth: string } }
+) {
+  const authHandler = await handleAuth()
+  return authHandler(req, params.kindeAuth)
 }
 
-//set {params}:any so there are no errors. 
-export async function GET(request: NextRequest, { params }: Props) {
+export async function POST(
+  req: NextRequest,
+  { params }: { params: { kindeAuth: string } }
+) {
   const authHandler = await handleAuth()
-  return authHandler(request, params.kindeAuth)
-}
-
-export async function POST(request: NextRequest, { params }: Props) {
-  const authHandler = await handleAuth()
-  return authHandler(request, params.kindeAuth)
+  return authHandler(req, params.kindeAuth)
 }
