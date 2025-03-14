@@ -1,5 +1,5 @@
 import { fetchRequestHandler } from '@trpc/server/adapters/fetch'
-import { appRouter } from '@/trpc'
+import { appRouter } from '@/app/_trpc'
 
 
 //the angle brackets are a dynamic catch all folder. 

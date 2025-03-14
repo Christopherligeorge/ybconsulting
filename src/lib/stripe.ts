@@ -1,8 +1,6 @@
-
-import { PLANS } from '@/config/stripe'
-import { db } from '@/db'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 import Stripe from 'stripe'
+import { db } from '@/db'
 
 export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY ?? '', {
   apiVersion: '2024-06-20',
@@ -13,18 +11,9 @@ export async function getUserSubscriptionPlan() {
   const { getUser } = getKindeServerSession()
   const user = await getUser()
 
-  /*
-  To error handle if user possible null
-  if (!user) {
-    // if user is null or undefined, throw an error
-    throw new TRPCError({ code: 'UNAUTHORIZED' })
-  }*/ 
-
-    
-//@ts-ignore
-  if (!user.id) {
+  if (!user || !user.id) {
     return {
-      ...PLANS[0],
+      name: 'Free',
       isSubscribed: false,
       isCanceled: false,
       stripeCurrentPeriodEnd: null,
@@ -33,14 +22,13 @@ export async function getUserSubscriptionPlan() {
 
   const dbUser = await db.user.findFirst({
     where: {
-      //@ts-ignore
       id: user.id,
     },
   })
 
   if (!dbUser) {
     return {
-      ...PLANS[0],
+      name: 'Free',
       isSubscribed: false,
       isCanceled: false,
       stripeCurrentPeriodEnd: null,
@@ -49,13 +37,9 @@ export async function getUserSubscriptionPlan() {
 
   const isSubscribed = Boolean(
     dbUser.stripePriceId &&
-      dbUser.stripeCurrentPeriodEnd && // 86400000 = 1 day
-      dbUser.stripeCurrentPeriodEnd.getTime() + 86_400_000 > Date.now()
+    dbUser.stripeCurrentPeriodEnd && // 86400000 = 1 day
+    dbUser.stripeCurrentPeriodEnd.getTime() + 86_400_000 > Date.now()
   )
-
-  const plan = isSubscribed
-    ? PLANS.find((plan) => plan.price.priceIds.test === dbUser.stripePriceId)
-    : null
 
   let isCanceled = false
   if (isSubscribed && dbUser.stripeSubscriptionId) {
@@ -66,11 +50,9 @@ export async function getUserSubscriptionPlan() {
   }
 
   return {
-    ...plan,
-    stripeSubscriptionId: dbUser.stripeSubscriptionId,
-    stripeCurrentPeriodEnd: dbUser.stripeCurrentPeriodEnd,
-    stripeCustomerId: dbUser.stripeCustomerId,
+    name: isSubscribed ? 'Pro' : 'Free',
     isSubscribed,
     isCanceled,
+    stripeCurrentPeriodEnd: dbUser.stripeCurrentPeriodEnd,
   }
 }

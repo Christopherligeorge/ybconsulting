@@ -1,5 +1,3 @@
-
-
 import Navbar from '@/components/Navbar'
 import Providers from '@/components/Providers'
 import { cn, constructMetadata } from '@/lib/utils'

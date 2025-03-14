@@ -16,7 +16,7 @@
     "@langchain/pinecone": "^0.0.7",
     "@mantine/hooks": "^7.11.1",
     "@pinecone-database/pinecone": "^2.2.2",
-    "@prisma/client": "^5.16.1",
+    "@prisma/client": "^6.5.0",
     "@radix-ui/react-avatar": "^1.1.0",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-dropdown-menu": "^2.1.1",
@@ -39,7 +39,7 @@
     "date-fns": "^3.6.0",
     "langchain": "^0.2.9",
     "lucide-react": "^0.400.0",
-    "next": "14.2.4",
+    "next": "^15.2.2",
     "openai": "^4.52.5",
     "pdf-parse": "^1.1.1",
     "pnpm": "^9.4.0",
@@ -61,14 +61,15 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
+    "@types/node": "^20.17.24",
+    "@types/react": "^18.3.18",
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "14.2.4",
     "postcss": "^8",
-    "prisma": "^5.16.1",
+    "prisma": "^6.5.0",
     "tailwindcss": "^3.4.1",
+    "tsx": "^4.19.3",
     "typescript": "^5.5.3"
   }
 }

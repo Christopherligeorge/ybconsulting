@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -7,9 +6,8 @@ generator client {
 // Instead, it manages relations at the application level. 
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url  = env("DATABASE_URL")
-  relationMode = "prisma"
 }
 
 model User {
@@ -50,7 +48,7 @@ model File {
 
 model Message {
   id   String @id @default(cuid())
-  text String @db.Text()
+  text String
 
   isUserMessage Boolean
 

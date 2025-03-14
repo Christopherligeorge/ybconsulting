@@ -1,20 +1,23 @@
 'use client'
 
+import React, { useEffect, useState } from 'react'
 import { ArrowRight, Menu } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
 
-const MobileNav = ({ isAuth }: { isAuth: boolean }) => {
-  const [isOpen, setOpen] = useState<boolean>(false)
+interface MobileNavProps {
+  isAuth: boolean
+}
 
-  const toggleOpen = () => setOpen((prev) => !prev)
-
+const MobileNav = ({ isAuth }: MobileNavProps) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false)
   const pathname = usePathname()
 
   useEffect(() => {
-    if (isOpen) toggleOpen()
-  }, [pathname])
+    if (isOpen) setIsOpen(false)
+  }, [pathname, isOpen])
+
+  const toggleOpen = () => setIsOpen((prev: boolean) => !prev)
 
   const closeOnCurrent = (href: string) => {
     if (pathname === href) {
@@ -33,7 +36,7 @@ const MobileNav = ({ isAuth }: { isAuth: boolean }) => {
         <div className='fixed animate-in slide-in-from-top-5 fade-in-20 inset-0 z-0 w-full'>
           <ul className='absolute bg-white border-b border-zinc-200 shadow-xl grid w-full gap-3 px-10 pt-20 pb-8'>
             {!isAuth ? (
-              <>
+              <React.Fragment>
                 <li>
                   <Link
                     onClick={() =>
@@ -67,9 +70,9 @@ const MobileNav = ({ isAuth }: { isAuth: boolean }) => {
                     Pricing
                   </Link>
                 </li>
-              </>
+              </React.Fragment>
             ) : (
-              <>
+              <React.Fragment>
                 <li>
                   <Link
                     onClick={() =>
@@ -88,7 +91,7 @@ const MobileNav = ({ isAuth }: { isAuth: boolean }) => {
                     Sign out
                   </Link>
                 </li>
-              </>
+              </React.Fragment>
             )}
           </ul>
         </div>

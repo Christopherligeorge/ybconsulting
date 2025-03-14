@@ -11,10 +11,12 @@ import { handleAuth } from '@kinde-oss/kinde-auth-nextjs/server'
 import { NextRequest } from 'next/server'
 
 //set {params}:any so there are no errors. 
-export async function GET(
-  request: NextRequest,
-  { params }: any
-) {
-  const endpoint = params.kindeAuth
-  return handleAuth(request, endpoint)
+export const GET = async (request: NextRequest, { params }: { params: { kindeAuth: string } }) => {
+  const authHandler = await handleAuth()
+  return authHandler(request, params.kindeAuth)
+}
+
+export const POST = async (request: NextRequest, { params }: { params: { kindeAuth: string } }) => {
+  const authHandler = await handleAuth()
+  return authHandler(request, params.kindeAuth)
 }

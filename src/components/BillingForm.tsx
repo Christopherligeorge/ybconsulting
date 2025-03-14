@@ -45,19 +45,18 @@ const BillingForm = ({
   //createStripeSession mutation. mutate is a function to trigger the mutation, and isLoading 
   //indicates the loading state of the mutation.
 
-  const { mutate: createStripeSession, status} =
-    trpc.createStripeSession.useMutation({
-      onSuccess: ({ url }) => {
-        if (url) window.location.href = url
-        if (!url) {
-          toast({
-            title: 'There was a problem...',
-            description: 'Please try again in a moment',
-            variant: 'destructive',
-          })
-        }
-      },
-    })
+  const { mutate: createStripeSession, status } = trpc.createStripeSession.useMutation({
+    onSuccess: ({ url }) => {
+      if (url) window.location.href = url
+      if (!url) {
+        toast({
+          title: 'There was a problem...',
+          description: 'Please try again in a moment',
+          variant: 'destructive',
+        })
+      }
+    },
+  })
 
   return (
     <MaxWidthWrapper className='max-w-5xl'>

@@ -20,11 +20,7 @@ import { useToast } from './ui/use-toast'
 import { trpc } from '@/app/_trpc/client'
 import { useRouter } from 'next/navigation'
 
-const UploadDropzone = ({
-  isSubscribed,
-}: {
-  isSubscribed: boolean
-}) => {
+const UploadDropzone = () => {
   const router = useRouter()
 
   //show loading progress of pdf uploading. 
@@ -37,8 +33,9 @@ const UploadDropzone = ({
     useState<number>(0)
   const { toast } = useToast()
 
+  const { data: subscriptionPlan } = trpc.getUserSubscriptionPlan.useQuery()
   const { startUpload } = useUploadThing(
-    isSubscribed ? 'proPlanUploader' : 'freePlanUploader'
+    subscriptionPlan?.isSubscribed ? 'proPlanUploader' : 'freePlanUploader'
   )
 
   //with trpc polling, retry and continuously poll after every time interval. 
@@ -129,7 +126,7 @@ const UploadDropzone = ({
                   or drag and drop
                 </p>
                 <p className='text-xs text-zinc-500'>
-                  PDF (up to {isSubscribed ? "16" : "4"}MB)
+                  PDF (up to 4MB)
                 </p>
               </div>
 
@@ -178,17 +175,9 @@ const UploadDropzone = ({
   )
 }
 
-const UploadButton = ({
-  isSubscribed,
-}: {
-  isSubscribed: boolean
-}) => {
-
-    //set a state that other componenets use(open, closed states)
+const UploadButton = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
-  //use shadcn dialog component, and can manage states such as when it is open. 
-  //add a callback function to this controlled component, 
   return (
     <Dialog
       open={isOpen}
@@ -204,7 +193,7 @@ const UploadButton = ({
       </DialogTrigger>
 
       <DialogContent>
-        <UploadDropzone isSubscribed={isSubscribed} />
+        <UploadDropzone />
       </DialogContent>
     </Dialog>
   )
