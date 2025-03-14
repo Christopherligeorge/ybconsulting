@@ -2,11 +2,13 @@ import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 import { db } from '@/db'
 import { redirect } from 'next/navigation'
 
-const Page = async ({
-  searchParams,
-}: {
-  searchParams: { origin: string }
-}) => {
+interface PageProps {
+  searchParams: {
+    origin?: string
+  }
+}
+
+const Page = async ({ searchParams }: PageProps) => {
   const { getUser } = getKindeServerSession()
   const user = await getUser()
 
