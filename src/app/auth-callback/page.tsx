@@ -1,14 +1,8 @@
-'use server'
-
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 import { db } from '@/db'
 import { redirect } from 'next/navigation'
 
-export default async function Page({
-  searchParams,
-}: {
-  searchParams?: { [key: string]: string | string[] }
-}) {
+export default async function Page() {
   const { getUser } = getKindeServerSession()
   const user = await getUser()
 
@@ -34,10 +28,6 @@ export default async function Page({
     })
   }
 
-  // Get the origin from the URL search params
-  const origin = typeof searchParams?.origin === 'string' 
-    ? searchParams.origin 
-    : '/dashboard'
-    
-  return redirect(origin)
+  // Default to dashboard if no origin is specified
+  return redirect('/dashboard')
 }
