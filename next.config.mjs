@@ -13,9 +13,18 @@ const nextConfig = {
     KINDE_SITE_URL: process.env.KINDE_SITE_URL,
     KINDE_POST_LOGOUT_REDIRECT_URL: process.env.KINDE_POST_LOGOUT_REDIRECT_URL,
     KINDE_POST_LOGIN_REDIRECT_URL: process.env.KINDE_POST_LOGIN_REDIRECT_URL,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY,
   },
   images: {
     domains: ['gravatar.com'],
+  },
+  // Add CSS configuration
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.css$/,
+      use: ['style-loader', 'css-loader', 'postcss-loader'],
+    });
+    return config;
   },
   async redirects() {
     return [
