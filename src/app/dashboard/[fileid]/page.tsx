@@ -6,12 +6,11 @@ import { getUserSubscriptionPlan } from '@/lib/stripe'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 import { notFound, redirect } from 'next/navigation'
 
-export default async function Page({
-  params,
-}: {
+type PageProps = {
   params: { fileid: string }
-  searchParams?: { [key: string]: string | string[] }
-}) {
+}
+
+export default async function Page({ params }: PageProps) {
   const { fileid } = params
 
   const { getUser } = getKindeServerSession()
