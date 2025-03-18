@@ -6,15 +6,11 @@ import { getUserSubscriptionPlan } from '@/lib/stripe'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 import { notFound, redirect } from 'next/navigation'
 
-type Props = {
-  params: {
-    fileid: string
-  }
-  searchParams: { [key: string]: string | string[] }
-}
-
-//need to get access to the pageID at the end of the fileURL to query the DB
-export default async function Page({ params }: Props) {
+export default async function Page({
+  params,
+}: {
+  params: { fileid: string }
+}) {
   const { fileid } = params
 
   const { getUser } = getKindeServerSession()
