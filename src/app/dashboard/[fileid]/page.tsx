@@ -10,6 +10,7 @@ export default async function Page({
   params,
 }: {
   params: { fileid: string }
+  searchParams?: { [key: string]: string | string[] }
 }) {
   const { fileid } = params
 
