@@ -1,4 +1,3 @@
-
 //need page.tsx in fileid to determine contents shown for fileID
 import ChatWrapper from '@/components/chat/ChatWrapper'
 import PdfRenderer from '@/components/PdfRenderer'
@@ -7,15 +6,15 @@ import { getUserSubscriptionPlan } from '@/lib/stripe'
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
 import { notFound, redirect } from 'next/navigation'
 
-interface PageProps {
+type Props = {
   params: {
     fileid: string
   }
+  searchParams: { [key: string]: string | string[] }
 }
 
 //need to get access to the pageID at the end of the fileURL to query the DB
-const Page = async ({ params }: PageProps) => {
-    //retrieve fileid. 
+export default async function Page({ params }: Props) {
   const { fileid } = params
 
   const { getUser } = getKindeServerSession()
@@ -56,5 +55,3 @@ const Page = async ({ params }: PageProps) => {
     </div>
   )
 }
-
-export default Page
