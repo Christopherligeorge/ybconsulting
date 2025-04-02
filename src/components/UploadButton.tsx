@@ -20,7 +20,11 @@ import { useToast } from './ui/use-toast'
 import { trpc } from '@/app/_trpc/client'
 import { useRouter } from 'next/navigation'
 
-const UploadDropzone = () => {
+const UploadDropzone = ({
+  isSubscribed,
+}: {
+  isSubscribed: boolean
+}) => {
   const router = useRouter()
 
   //show loading progress of pdf uploading. 
@@ -175,7 +179,12 @@ const UploadDropzone = () => {
   )
 }
 
-const UploadButton = () => {
+const UploadButton = ({
+  isSubscribed,
+}: {
+  isSubscribed: boolean
+}) => {
+
   const [isOpen, setIsOpen] = useState<boolean>(false)
 
   return (
@@ -193,7 +202,7 @@ const UploadButton = () => {
       </DialogTrigger>
 
       <DialogContent>
-        <UploadDropzone />
+        <UploadDropzone isSubscribed={isSubscribed}/>
       </DialogContent>
     </Dialog>
   )

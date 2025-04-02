@@ -17,6 +17,7 @@ import {
   Minus,
 } from 'lucide-react'
 import Link from 'next/link'
+import '../globals.css';
 
 const Page = () => {
 
@@ -94,6 +95,9 @@ const Page = () => {
           <h1 className='text-6xl font-bold sm:text-7xl'>
             Pricing
           </h1>
+          <div className="!bg-red-500 text-white p-4">
+  If you see a red box, Tailwind is working!
+</div>
           <p className='mt-5 text-gray-600 sm:text-lg'>
             Whether you&apos;re just trying out our service
             or need more, we&apos;ve got you covered.

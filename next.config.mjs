@@ -3,9 +3,6 @@
 //need custom webpack in nextConfig to render pdfs(b/c cant render like images.)
 const nextConfig = {
   output: 'standalone',
-  experimental: {
-    serverActions: true,
-  },
   env: {
     KINDE_CLIENT_ID: process.env.KINDE_CLIENT_ID,
     KINDE_CLIENT_SECRET: process.env.KINDE_CLIENT_SECRET,
@@ -16,15 +13,13 @@ const nextConfig = {
     OPENAI_API_KEY: process.env.OPENAI_API_KEY,
   },
   images: {
-    domains: ['gravatar.com'],
-  },
-  // Add CSS configuration
-  webpack: (config) => {
-    config.module.rules.push({
-      test: /\.css$/,
-      use: ['style-loader', 'css-loader', 'postcss-loader'],
-    });
-    return config;
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'gravatar.com',
+        pathname: '/**',
+      },
+    ],
   },
   async redirects() {
     return [
@@ -48,12 +43,42 @@ const nextConfig = {
       },
     ]
   },
-  webpack: (
-    config,
-    { buildId, dev, isServer, defaultLoaders, webpack }
-  ) => {
+  webpack: (config) => {
     config.resolve.alias.canvas = false;
     config.resolve.alias.encoding = false;
+    
+    // SVG handling
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: [{
+        loader: '@svgr/webpack',
+        options: {
+          svgoConfig: {
+            plugins: [
+              {
+                name: 'preset-default',
+                params: {
+                  overrides: {
+                    removeViewBox: false
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }]
+    });
+
+    // Ensure CSS is processed correctly
+    config.module.rules.push({
+      test: /\.css$/,
+      use: [
+        'style-loader',
+        'css-loader',
+        'postcss-loader',
+      ],
+    });
+
     return config;
   },
 };

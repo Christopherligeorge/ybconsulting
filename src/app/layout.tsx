@@ -2,26 +2,35 @@ import Navbar from '@/components/Navbar'
 import Providers from '@/components/Providers'
 import { cn, constructMetadata } from '@/lib/utils'
 import { Inter } from 'next/font/google'
+import type { Viewport } from 'next'
+
+// Import Tailwind first
 import './globals.css'
 
+// Then other styles
 import 'react-loading-skeleton/dist/skeleton.css'
 import 'simplebar-react/dist/simplebar.min.css'
 
 import { Toaster } from '@/components/ui/toaster'
-import type { Viewport } from 'next'
-
-
-// This component wraps the entire application
-//{children} in layout.tsx are all the pages in our app
-//the <body> tags wrap the app
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = constructMetadata()
 
 export const viewport: Viewport = {
-  themeColor: '#zinc-700',
+  themeColor: '#FFF',
 }
+
+/*
+export const viewport: Viewport = {
+  themeColor: '#zinc-700',
+}*/
+
+/* put this under html lang="en" in the return statement, if not working
+ <head>
+        <link rel="stylesheet" href="/globals.css" />
+      </head>
+*/
 
 export default function RootLayout({
   children,
@@ -30,17 +39,22 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en' className='light'>
-      <Providers>
-        <body
-          className={cn(
-            'min-h-screen font-sans antialiased grainy',
-            inter.className
-          )}>
+      <head>
+        <link rel="stylesheet" href="/globals.css" />
+      </head>
+      <body
+        className={cn(
+          'min-h-screen font-sans antialiased grainy flex flex-col',
+          inter.className
+        )}>
+        <Providers>
           <Toaster />
           <Navbar />
-          {children}
-        </body>
-      </Providers>
+          <div className="flex-1 flex flex-col">
+            {children}
+          </div>
+        </Providers>
+      </body>
     </html>
   )
 }

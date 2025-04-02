@@ -41,6 +41,7 @@ const UserAccountNav = async ({
                   src={imageUrl}
                   alt='profile picture'
                   referrerPolicy='no-referrer'
+                  className='rounded-full object-cover'
                 />
               </div>
             ) : (

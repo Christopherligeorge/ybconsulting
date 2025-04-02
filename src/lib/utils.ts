@@ -1,19 +1,17 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
 import {Metadata} from "next"
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
 export function absoluteUrl(path: string) {
   if (typeof window !== 'undefined') return path
-  if (process.env.VERCEL_URL)
-    return `https://${process.env.VERCEL_URL}${path}`
-  return `http://localhost:${
-    process.env.PORT ?? 3000
-  }${path}`
+  // Use the current host instead of hardcoding Vercel
+  const host = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+  return `${host}${path}`
 }
-
 
 export function constructMetadata({
   title = "Quill - the SaaS for students",
@@ -28,6 +26,9 @@ export function constructMetadata({
   icons?: string
   noIndex?: boolean
 } = {}): Metadata {
+  // Use the current host for metadataBase
+  const host = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+  
   return {
     title,
     description,
@@ -48,8 +49,7 @@ export function constructMetadata({
       creator: "@joshtriedcoding"
     },
     icons,
-    metadataBase: new URL('https://quill-jet.vercel.app'),
-    themeColor: '#FFF',
+    metadataBase: new URL(host),
     ...(noIndex && {
       robots: {
         index: false,
